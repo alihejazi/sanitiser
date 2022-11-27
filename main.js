@@ -20,7 +20,7 @@ const test2 = {
     c: {k1: ''},
 };
 
-const sanitiser = (obj) => isJson(obj) ? sanitiseJson(obj) : Array.isArray(obj) ? sanitiseArray(obj) : obj;
+const sanitise = (obj) => isJson(obj) ? sanitiseJson(obj) : Array.isArray(obj) ? sanitiseArray(obj) : obj;
 
 const sanitiseJson = (obj) => {
     return Object.keys(obj).reduce((acc, key) => {
@@ -34,7 +34,7 @@ const sanitiseJson = (obj) => {
 
 const sanitiseArray = (val) => {
     return val.reduce((acc, el) => {
-        const sanitised = sanitiser(el);
+        const sanitised = sanitise(el);
         if (!isValueEmpty(sanitised)) {
             acc.push(sanitised);
         }
@@ -53,4 +53,4 @@ const isValueEmpty = (val) => {
 const isJson = (val) => typeof(val) === 'object' && val !== null && !Array.isArray(val);
 
 // For testing purposes:
-console.log(JSON.stringify(sanitiser(test1), null, 2));
+console.log(JSON.stringify(sanitise(test1), null, 2));
