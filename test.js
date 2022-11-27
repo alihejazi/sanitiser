@@ -25,10 +25,9 @@ const sanitiser = (obj) => isJson(obj) ? sanitiseJson(obj) : Array.isArray(obj) 
 const sanitiseJson = (obj) => {
     return Object.keys(obj).reduce((acc, key) => {
         const val = Array.isArray(obj[key]) ? sanitiseArray(obj[key]) : obj[key];
-        if (isValueEmpty(val)) {
-            return acc;
+        if (!isValueEmpty(val)) {
+            acc[key] = val;
         }
-        acc[key] = val;
         return acc;
     }, {});
 }
@@ -36,35 +35,21 @@ const sanitiseJson = (obj) => {
 const sanitiseArray = (val) => {
     return val.reduce((acc, el) => {
         const sanitised = sanitiser(el);
-        if (isValueEmpty(sanitised)) {
-            return acc;
+        if (!isValueEmpty(sanitised)) {
+            acc.push(sanitised);
         }
-        acc.push(sanitised);
         return acc;
     }, []);
 }
 
 const isValueEmpty = (val) => {
-
-    if ([null, undefined, ''].includes(val)) {
-        return true;
-    }
-
-    if (isJson(val)) {
-        if (Object.keys(sanitiseJson(val)).length === 0) {
-            return true;
-        }
-    }
-
-    else if (Array.isArray(val)) {
-        if (sanitiseArray(val).length === 0) {
-            return true;
-        }
-    }
-
-    return false;
+    return (
+        [null, undefined, ''].includes(val) ||
+        (isJson(val) && Object.keys(sanitiseJson(val)).length === 0) ||
+        (Array.isArray(val) && sanitiseArray(val).length === 0)
+    );
 }
 
 const isJson = (val) => typeof(val) === 'object' && val !== null && !Array.isArray(val);
 
-console.log(JSON.stringify(sanitiser({}), null, 2));
+console.log(JSON.stringify(sanitiser(x), null, 2));
