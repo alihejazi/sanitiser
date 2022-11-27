@@ -1,4 +1,4 @@
-const x = {
+const test1 = {
     k1: null,
     k2: "",
     a: 1,
@@ -16,7 +16,7 @@ const x = {
     }],
 };
 
-const y = {
+const test2 = {
     c: {k1: ''},
 };
 
