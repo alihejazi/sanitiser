@@ -52,4 +52,5 @@ const isValueEmpty = (val) => {
 
 const isJson = (val) => typeof(val) === 'object' && val !== null && !Array.isArray(val);
 
-console.log(JSON.stringify(sanitiser(x), null, 2));
+// For testing purposes:
+console.log(JSON.stringify(sanitiser(test1), null, 2));
